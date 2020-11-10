@@ -1,4 +1,4 @@
-const { db } = require("./adminSdk");
+const { db } = require("../adminSdk");
 const admin = require("firebase-admin");
 
 const cors = require("cors")({ origin: true });

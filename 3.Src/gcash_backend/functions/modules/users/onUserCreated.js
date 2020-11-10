@@ -1,8 +1,9 @@
-const { db } = require("./adminSdk");
+const { db } = require("../adminSdk");
 const admin = require("firebase-admin");
-
+const defaultParameters = { "lang": "ar", "secAllApp": 1, "secOperation": 2 };
+const defaultAccount = { "solde": 0, "libelle": "Compte principal" };
 const onUserCreated = (user) => {
-    admin
+  admin
     .auth()
     .setCustomUserClaims(user.uid, { isRider: true })
     .then(() => {
@@ -18,8 +19,9 @@ const onUserCreated = (user) => {
     photoURL: user.photoURL === null ? " " : user.photoURL,
     phoneNumber: user.phoneNumber === null ? " " : user.phoneNumber,
   };
-  db.collection("users").doc(user.uid).set(datasToUpdate, { merge: true });
-  db.collection("users"+user.uid+"para").doc("meters").set({}, { merge: true });
+  db.collection(usersCollection).doc(user.uid).set(datasToUpdate, { merge: true });
+  db.collection(usersCollection+"/" + user.uid + "/"+paraCollection).doc(metersDocument).set(defaultParameters, { merge: true });
+  db.collection(usersCollection+"/" + user.uid + "/"+comptesCollection).doc(principalDocument).set(defaultAccount, { merge: true });
 
 };
 
