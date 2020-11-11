@@ -21,28 +21,43 @@ const onPaiementCreated = async (snap, context) => {
     let paiementId = context.params.paiementId;
     let montant = snap.data()[montantField] || 0;
     let idEmetteur = snap.data()[idEmetteurField];
-    let idReceveur = snap.data()[idReceveurField];
-    let operationsEmetteurPath = usersCollection + "/" + idEmetteur + "/" + comptesCollection + "/" + principalDocument+"/"+operationsCollection;
-    let operationsReceveurPath = usersCollection + "/" + idReceveur + "/" + comptesCollection + "/" + principalDocument+"/"+operationsCollection;
+    let idReceveur = snap.data()[idReceveurField] || null;
+    let phoneReceveur = snap.data()[phoneReceveurField] || null;
+    let operationsEmetteurPath = usersCollection + "/" + idEmetteur + "/" + comptesCollection + "/" + principalDocument + "/" + operationsCollection;
     let dataEmetteur = {
         typeOperation: typeOperationPaiement,
         montant: -montant,
         comment: "",
-        date: admin.firestore.FieldValue.serverTimestamp,
-    };
-    let dataReceveur = {
-        typeOperation: typeOperationPaiement,
-        montant: montant,
-        comment: "",
-        date: admin.firestore.FieldValue.serverTimestamp,
+        date: admin.firestore.FieldValue.serverTimestamp(),
     };
     let refEmetteur = db.collection(operationsEmetteurPath).doc();
-    batch.create(refEmetteur,dataEmetteur);
-    
-    let refReceveur = db.collection(operationsReceveurPath).doc();
-    batch.create(refReceveur,dataReceveur);
-
-    return;
+    batch.create(refEmetteur, dataEmetteur);
+    if (!idReceveur) {
+        if (phoneReceveur) {
+            // look for the reciever in the db
+            try {
+                let user = await admin.auth().getUserByPhoneNumber("+222" + phoneReceveur);
+                if (user) {
+                    idReceveur = user.uid;
+                }
+            } catch (e) {
+                console.log("user not existing");
+            }
+        }
+    }
+    if (idReceveur) {
+        let operationsReceveurPath = usersCollection + "/" + idReceveur + "/" + comptesCollection + "/" + principalDocument + "/" + operationsCollection;
+        let dataReceveur = {
+            typeOperation: typeOperationPaiement,
+            montant: montant,
+            comment: "",
+            date: admin.firestore.FieldValue.serverTimestamp(),
+        };
+        let refReceveur = db.collection(operationsReceveurPath).doc();
+        batch.create(refReceveur, dataReceveur);
+    }
+    batch.commit();
+    return "";
 }
 
 

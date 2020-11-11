@@ -30,7 +30,7 @@ const onTrnasfertCreated = async (snap, context) => {
         typeOperation: typeOperationTransfert,
         montant: -montant,
         comment: "",
-        date: admin.firestore.FieldValue.serverTimestamp,
+        date: admin.firestore.FieldValue.serverTimestamp(),
     };
     let refEmetteur = db.collection(operationsEmetteurPath).doc();
     batch.create(refEmetteur, dataEmetteur);
@@ -53,7 +53,7 @@ const onTrnasfertCreated = async (snap, context) => {
             typeOperation: typeOperationTransfert,
             montant: montant,
             comment: "",
-            date: admin.firestore.FieldValue.serverTimestamp,
+            date: admin.firestore.FieldValue.serverTimestamp(),
         };
         let refReceveur = db.collection(operationsReceveurPath).doc();
         batch.create(refReceveur, dataReceveur);

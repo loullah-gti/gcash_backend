@@ -19,9 +19,9 @@ const onUserCreated = (user) => {
     photoURL: user.photoURL === null ? " " : user.photoURL,
     phoneNumber: user.phoneNumber === null ? " " : user.phoneNumber,
   };
-  db.collection(usersCollection).doc(user.uid).set(datasToUpdate, { merge: true });
-  db.collection(usersCollection+"/" + user.uid + "/"+paraCollection).doc(metersDocument).set(defaultParameters, { merge: true });
-  db.collection(usersCollection+"/" + user.uid + "/"+comptesCollection).doc(principalDocument).set(defaultAccount, { merge: true });
+  db.collection(usersCollection).doc(user.uid).create(datasToUpdate);
+  db.collection(usersCollection+"/" + user.uid + "/"+paraCollection).doc(metersDocument).create(defaultParameters);
+  db.collection(usersCollection+"/" + user.uid + "/"+comptesCollection).doc(principalDocument).create(defaultAccount);
 
 };
 
