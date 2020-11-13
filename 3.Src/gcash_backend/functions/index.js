@@ -1,4 +1,4 @@
-const functions = require("firebase-functions"); 
+const functions = require("firebase-functions");
 
 const onUserCreated = require("./modules/users/onUserCreated");
 const setUserClaims = require("./modules/users/setUserClaims");
@@ -6,14 +6,18 @@ const setUserDetails = require("./modules/users/setUserDetails");
 const onComptaOpCreated = require("./modules/compta/onComptaOpCreated");
 const onPaiementCreated = require("./modules/transactions/onPaiementCreated");
 const onTrnasfertCreated = require("./modules/transactions/onTrnasfertCreated");
+const onCarteUsed = require("./modules/transactions/onCarteUsed");
+const findMeACarte = require("./modules/transactions/findMeACarte");
 
 const { db } = require("./modules/adminSdk");
 
+const admin = require("firebase-admin");
 
 const usersCollection = "users";
 const transfertCollection = "transferts";
 const paiementsCollection = "paiements";
 const comptesCollection = "comptes";
+const cartesCollection = "cartes";
 const operationsCollection = "operations";
 const principalDocument = "principal";
 const paraCollection = "para";
@@ -30,12 +34,19 @@ module.exports = {
   setUserClaims: functions.https.onRequest(setUserClaims),
   setUserDetails: functions.https.onRequest(setUserDetails),
   onComptaOpCreated: functions.firestore
-    .document(usersCollection+ "/{uid}/"+comptesCollection+"/{compteId}/"+operationsCollection+"/{operationId}")
+    .document(usersCollection + "/{uid}/" + comptesCollection + "/{compteId}/" + operationsCollection + "/{operationId}")
     .onCreate(onComptaOpCreated),
-    onTrnasfertCreated: functions.firestore
-      .document(transfertCollection+ "/{transfertId}")
-      .onCreate(onTrnasfertCreated),
-      onPaiementCreated: functions.firestore
-      .document(paiementsCollection+ "/{paiementId}")
-      .onCreate(onPaiementCreated),
+  onTrnasfertCreated: functions.firestore
+    .document(transfertCollection + "/{transfertId}")
+    .onCreate(onTrnasfertCreated),
+  onPaiementCreated: functions.firestore
+    .document(paiementsCollection + "/{paiementId}")
+    .onCreate(onPaiementCreated),
+
+  onCarteUsed: functions.firestore
+    .document(cartesCollection + "/{paiementId}")
+    .onWrite(onCarteUsed),
+
+  findMeACarte: functions.https.onRequest(findMeACarte),
+
 };

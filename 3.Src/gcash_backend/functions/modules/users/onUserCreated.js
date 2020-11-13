@@ -2,6 +2,20 @@ const { db } = require("../adminSdk");
 const admin = require("firebase-admin");
 const defaultParameters = { "lang": "ar", "secAllApp": 1, "secOperation": 2 };
 const defaultAccount = { "solde": 0, "libelle": "Compte principal" };
+const {
+  usersCollection,
+  comptesCollection,
+  operationsCollection,
+  principalDocument,
+  paraCollection,
+  metersDocument,
+  montantField,
+  typeOpTransfert,
+  typeOpPaiement,
+  typeOpRecharge,
+  typeOpRetrait,
+  typeOpAlimentation,
+} = require("../../constants");
 const onUserCreated = (user) => {
   admin
     .auth()

@@ -1,6 +1,6 @@
 const functions = require("firebase-functions");
 var isLocal=false;
-var isProdEnv = isLocal?false:(functions.config().env.isprod === "true" ? true : false);
+var isProdEnv = true;
 const admin = require("firebase-admin");
 const serviceAccount = isProdEnv
   ? require("../config/gcash-61021-firebase-adminsdk-9odvc-ba27b8f616.json")
