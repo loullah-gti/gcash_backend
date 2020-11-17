@@ -39,12 +39,12 @@ const findMeACarte = async (req, res) => {
                 }
             }
             // }
-        } else { 
+            res.send({ data: { carte: null, code: null } });
+            return;
+        } else {
             res.status(401).send({ data: { error: "Unauthorized" } });
             return;
         }
-        res.send({ data: { carte: null, code: null } });
-        return;
 
     } catch (err) {
         console.error(err);
@@ -61,7 +61,7 @@ async function getRandomcarte(operateur, montant) {
     var sn = await cartesCollection
         .where(admin.firestore.FieldPath.documentId(), ">=", key)
         .where("etat", "=", 1)
-        .where("operateurId", "=", ""+operateur)
+        .where("operateurId", "=", "" + operateur)
         .where("valeur", "=", montant)
         .limit(1)
         .get();
@@ -71,7 +71,7 @@ async function getRandomcarte(operateur, montant) {
         sn = await cartesCollection
             .where(admin.firestore.FieldPath.documentId(), "<", key)
             .where("etat", "=", 1)
-            .where("operateurId", "=", ""+operateur)
+            .where("operateurId", "=", "" + operateur)
             .where("valeur", "=", montant)
             .limit(1)
             .get();
@@ -88,8 +88,8 @@ async function reserveThisCarte(user, carte, phoneNumber) {
         datasToUpdate = {
             etat: 2,
             usedById: user.uid,
-            usedByName: user.displayName||"",
-            usedByPhoneNumber: user.phoneNumber||"",
+            usedByName: user.displayName || "",
+            usedByPhoneNumber: user.phoneNumber || "",
             usedDestPhoneNumber: phoneNumber || "",
             usedDate: admin.firestore.FieldValue.serverTimestamp(),
         };

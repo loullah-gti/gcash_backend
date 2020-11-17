@@ -8,6 +8,7 @@ const onPaiementCreated = require("./modules/transactions/onPaiementCreated");
 const onTrnasfertCreated = require("./modules/transactions/onTrnasfertCreated");
 const onCarteUsed = require("./modules/transactions/onCarteUsed");
 const findMeACarte = require("./modules/transactions/findMeACarte");
+const onAlimentationCreated = require("./modules/transactions/onAlimentationCreated");
 
 const { db } = require("./modules/adminSdk");
 
@@ -15,6 +16,7 @@ const admin = require("firebase-admin");
 
 const usersCollection = "users";
 const transfertCollection = "transferts";
+const alimentationsCollection = "alimentations";
 const paiementsCollection = "paiements";
 const comptesCollection = "comptes";
 const cartesCollection = "cartes";
@@ -42,6 +44,9 @@ module.exports = {
   onPaiementCreated: functions.firestore
     .document(paiementsCollection + "/{paiementId}")
     .onCreate(onPaiementCreated),
+    onAlimentationCreated: functions.firestore
+    .document(alimentationsCollection + "/{alimId}")
+    .onCreate(onAlimentationCreated),
 
   onCarteUsed: functions.firestore
     .document(cartesCollection + "/{paiementId}")

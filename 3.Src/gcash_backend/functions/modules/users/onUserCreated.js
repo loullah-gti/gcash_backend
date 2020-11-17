@@ -17,15 +17,15 @@ const {
   typeOpAlimentation,
 } = require("../../constants");
 const onUserCreated = (user) => {
-  admin
-    .auth()
-    .setCustomUserClaims(user.uid, { isRider: true })
-    .then(() => {
-      return null;
-    })
-    .catch((error) => {
-      process.exit(1);
-    });
+  // admin
+  //   .auth()
+  //   .setCustomUserClaims(user.uid, { is: true })
+  //   .then(() => {
+  //     return null;
+  //   })
+  //   .catch((error) => {
+  //     process.exit(1);
+  //   });
   let datasToUpdate = {
     uid: user.uid,
     displayName: user.displayName === null ? " " : user.displayName,

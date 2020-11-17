@@ -10,7 +10,10 @@ service cloud.firestore {
     }
     
     match /cartes/{carteId} {
-      allow read, write: if resource.data.etat==1 && request.auth.uid == request.resource.data.usedById;
+      allow read: if resource.data.etat==2 && request.auth.uid == request.resource.data.usedById;
+    }
+    match /alimentations/{carteId} {
+      allow read, write: if request.auth.token.isAgent;
     }
   }
 }
