@@ -3,6 +3,7 @@ const functions = require("firebase-functions");
 const onUserCreated = require("./modules/users/onUserCreated");
 const setUserClaims = require("./modules/users/setUserClaims");
 const setUserDetails = require("./modules/users/setUserDetails");
+const getPersonInfos = require("./modules/users/getPersonInfos");
 const onComptaOpCreated = require("./modules/compta/onComptaOpCreated");
 const onPaiementCreated = require("./modules/transactions/onPaiementCreated");
 const onTrnasfertCreated = require("./modules/transactions/onTrnasfertCreated");
@@ -53,5 +54,6 @@ module.exports = {
     .onWrite(onCarteUsed),
 
   findMeACarte: functions.https.onRequest(findMeACarte),
+  getPersonInfos: functions.https.onRequest(getPersonInfos),
 
 };

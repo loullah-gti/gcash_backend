@@ -60,9 +60,9 @@ async function getRandomcarte(operateur, montant) {
     var key = cartesCollection.doc().id;
     var sn = await cartesCollection
         .where(admin.firestore.FieldPath.documentId(), ">=", key)
-        .where("etat", "=", 1)
-        .where("operateurId", "=", "" + operateur)
-        .where("valeur", "=", montant)
+        .where("etat", "==", 1)
+        .where("operateurId", "==", "" + operateur)
+        .where("valeur", "==", montant)
         .limit(1)
         .get();
     if (sn.docs.length > 0) {
@@ -70,9 +70,9 @@ async function getRandomcarte(operateur, montant) {
     } else {
         sn = await cartesCollection
             .where(admin.firestore.FieldPath.documentId(), "<", key)
-            .where("etat", "=", 1)
-            .where("operateurId", "=", "" + operateur)
-            .where("valeur", "=", montant)
+            .where("etat", "==", 1)
+            .where("operateurId", "==", "" + operateur)
+            .where("valeur", "==", montant)
             .limit(1)
             .get();
         if (sn.docs.length > 0) {
