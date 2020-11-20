@@ -10,6 +10,8 @@ const onTrnasfertCreated = require("./modules/transactions/onTrnasfertCreated");
 const onCarteUsed = require("./modules/transactions/onCarteUsed");
 const findMeACarte = require("./modules/transactions/findMeACarte");
 const onAlimentationCreated = require("./modules/transactions/onAlimentationCreated");
+const getSNDEAccountByReference = require("./modules/external/snde/getSNDEAccountByReference");
+const getSomelecAccountByReference = require("./modules/external/somelec/getSomelecAccountByReference");
 
 const { db } = require("./modules/adminSdk");
 
@@ -55,5 +57,7 @@ module.exports = {
 
   findMeACarte: functions.https.onRequest(findMeACarte),
   getPersonInfos: functions.https.onRequest(getPersonInfos),
+  getSNDEAccountByReference: functions.https.onRequest(getSNDEAccountByReference),
+  getSomelecAccountByReference: functions.https.onRequest(getSomelecAccountByReference),
 
 };

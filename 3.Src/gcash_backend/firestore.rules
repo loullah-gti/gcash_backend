@@ -5,7 +5,11 @@ service cloud.firestore {
       allow read: if
           request.auth.uid!=null;
     }
-    match /users/{uid}/para {
+    match /users/{uid}/para/meters {
+    	allow read, write: if request.auth.uid == uid;
+    }
+    
+    match /users/{uid} {
     	allow read, write: if request.auth.uid == uid;
     }
     
@@ -13,7 +17,16 @@ service cloud.firestore {
       allow read: if resource.data.etat==2 && request.auth.uid == request.resource.data.usedById;
     }
     match /alimentations/{carteId} {
-      allow read, write: if request.auth.token.isAgent;
+      allow read, write: if request.auth.token.isAgent==true;
     }
+    match /paiements/{id} {
+      allow read, write: if request.resource.data.idEmetteur==request.auth.uid;
+    }
+    
+    match /transferts/{id} {
+      allow read, write: if request.resource.data.idEmetteur==request.auth.uid || 
+      (request.auth.token.isAgent && resource.data.etat==1);
+    }
+    
   }
 }
